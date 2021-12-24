@@ -1,5 +1,16 @@
+import { IsOptional } from 'class-validator';
 import { IRole, ISocialLink, IUser } from 'src/interfaces';
-import { BaseEntity, Column, Entity } from 'typeorm';
+import { Role } from 'src/role/role.entity';
+import {
+  BaseEntity,
+  Column,
+  Entity,
+  Index,
+  JoinColumn,
+  OneToMany,
+  OneToOne,
+  RelationId,
+} from 'typeorm';
 
 @Entity({ name: 'users' })
 export class User extends BaseEntity implements IUser {
@@ -10,13 +21,27 @@ export class User extends BaseEntity implements IUser {
   lastName: string;
 
   @Column()
-  email?: string;
+  email: string;
+
+  @Column()
   imageUrl?: string;
+
+  @Column({ nullable: true })
   about?: string;
+
+  //   @OneToMany(() =>)
   socialLinks: ISocialLink[];
+
+  @OneToOne(() => Role, {
+    nullable: true,
+    onDelete: 'CASCADE',
+  })
+  @JoinColumn()
   role?: IRole;
+
+  @RelationId((it: User) => it.role)
+  @IsOptional()
+  @Index()
+  @Column({ nullable: true })
   roleId?: number;
-  id?: number;
-  createdAt?: Date;
-  updatedAt?: Date;
 }
