@@ -1,10 +1,15 @@
 import { IRole, ISocialLink, IUser } from 'src/interfaces';
-import { BaseEntity, Entity } from 'typeorm';
+import { BaseEntity, Column, Entity } from 'typeorm';
 
 @Entity({ name: 'users' })
 export class User extends BaseEntity implements IUser {
-  firstName?: string;
-  lastName?: string;
+  @Column()
+  firstName: string;
+
+  @Column()
+  lastName: string;
+
+  @Column()
   email?: string;
   imageUrl?: string;
   about?: string;
