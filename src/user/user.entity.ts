@@ -7,7 +7,6 @@ import {
   Entity,
   Index,
   JoinColumn,
-  OneToMany,
   OneToOne,
   RelationId,
 } from 'typeorm';
