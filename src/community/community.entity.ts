@@ -1,7 +1,9 @@
 import { BaseEntity } from 'src/core/base.entity';
 import { ICommunity, IUser } from 'src/interfaces';
+import { Entity } from 'typeorm';
 
-export class CommunityEntity extends BaseEntity implements ICommunity {
+@Entity({ name: 'communities' })
+export class Community extends BaseEntity implements ICommunity {
   title: string;
   slug: string;
   owner?: IUser;
