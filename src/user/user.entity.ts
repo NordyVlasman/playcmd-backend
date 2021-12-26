@@ -10,11 +10,11 @@ import {
   Index,
   JoinColumn,
   JoinTable,
-  ManyToMany,
   OneToMany,
   OneToOne,
   RelationId,
 } from 'typeorm';
+import * as argon2 from 'argon2';
 
 @Entity({ name: 'users' })
 export class User extends BaseEntity implements IUser {

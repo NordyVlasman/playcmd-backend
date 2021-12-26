@@ -1,6 +1,10 @@
 import { BaseEntity } from 'src/core/base.entity';
 import { ISocialLink } from 'src/interfaces';
-import { Entity } from 'typeorm';
+import { User } from 'src/user/user.entity';
+import { Entity, ManyToOne } from 'typeorm';
 
 @Entity({ name: 'social-links' })
-export class SocialLink extends BaseEntity implements ISocialLink {}
+export class SocialLink extends BaseEntity implements ISocialLink {
+  @ManyToOne(() => User, (user) => user.socialLinks)
+  user: User;
+}
