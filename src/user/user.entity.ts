@@ -1,8 +1,8 @@
 import { IsOptional } from 'class-validator';
+import { BaseEntity } from 'src/core/base.entity';
 import { IRole, ISocialLink, IUser } from 'src/interfaces';
 import { Role } from 'src/role/role.entity';
 import {
-  BaseEntity,
   Column,
   Entity,
   Index,
