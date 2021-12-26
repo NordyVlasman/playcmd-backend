@@ -1,6 +1,6 @@
 import { IsEmail, IsOptional } from 'class-validator';
 import { BaseEntity } from 'src/core/base.entity';
-import { IRole, ISocialLink, IUser } from 'src/interfaces';
+import { ICommunity, IRole, ISocialLink, IUser } from 'src/interfaces';
 import { Role } from 'src/role/role.entity';
 import { SocialLink } from 'src/social-link/social-link.entity';
 import {
@@ -15,6 +15,7 @@ import {
   RelationId,
 } from 'typeorm';
 import * as argon2 from 'argon2';
+import { Community } from 'src/community/community.entity';
 
 @Entity({ name: 'users' })
 export class User extends BaseEntity implements IUser {
@@ -53,6 +54,12 @@ export class User extends BaseEntity implements IUser {
   @Index()
   @Column({ nullable: true })
   roleId?: number;
+
+  @OneToMany(() => Community, (community) => community.owner)
+  ownedCommunities?: ICommunity[];
+
+  @OneToMany(() => Community, (community) => community.createdBy)
+  createdCommunities?: ICommunity[];
 
   @BeforeInsert()
   async hashPassword() {
