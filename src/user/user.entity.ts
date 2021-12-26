@@ -1,12 +1,17 @@
-import { IsOptional } from 'class-validator';
+import { IsEmail, IsOptional } from 'class-validator';
 import { BaseEntity } from 'src/core/base.entity';
 import { IRole, ISocialLink, IUser } from 'src/interfaces';
 import { Role } from 'src/role/role.entity';
+import { SocialLink } from 'src/social-link/social-link.entity';
 import {
+  BeforeInsert,
   Column,
   Entity,
   Index,
   JoinColumn,
+  JoinTable,
+  ManyToMany,
+  OneToMany,
   OneToOne,
   RelationId,
 } from 'typeorm';
@@ -20,7 +25,11 @@ export class User extends BaseEntity implements IUser {
   lastName: string;
 
   @Column()
+  @IsEmail()
   email: string;
+
+  @Column()
+  password: string;
 
   @Column()
   imageUrl?: string;
@@ -28,7 +37,8 @@ export class User extends BaseEntity implements IUser {
   @Column({ nullable: true })
   about?: string;
 
-  //   @OneToMany(() =>)
+  @OneToMany(() => SocialLink, (socialLink) => socialLink.user)
+  @JoinTable()
   socialLinks: ISocialLink[];
 
   @OneToOne(() => Role, {
@@ -43,4 +53,9 @@ export class User extends BaseEntity implements IUser {
   @Index()
   @Column({ nullable: true })
   roleId?: number;
+
+  @BeforeInsert()
+  async hashPassword() {
+    this.password = await argon2.hash(this.password);
+  }
 }

@@ -5,7 +5,7 @@ export interface IUser extends IBaseEntityModel {
   lastName?: string;
   email?: string;
   imageUrl?: string;
-
+  password?: string;
   about?: string;
   socialLinks: ISocialLink[];
 
