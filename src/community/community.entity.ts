@@ -10,6 +10,9 @@ import {
   OneToMany,
 } from 'typeorm';
 import { User } from 'src/user/user.entity';
+import { Post } from 'src/post/post.entity';
+import { IPost } from 'src/interfaces/post.model';
+import { IsOptional } from 'class-validator';
 
 @Entity({ name: 'communities' })
 export class Community extends BaseEntity implements ICommunity {
@@ -24,17 +27,24 @@ export class Community extends BaseEntity implements ICommunity {
   owner?: IUser;
 
   @Column()
+  @IsOptional()
   smallTitle?: string;
 
   @Column()
   communityAvatar?: string;
 
   @Column()
+  @IsOptional()
   summary?: string;
 
   @ManyToMany(() => User, (user) => user.joinedCommunities)
-  @JoinTable()
+  @JoinTable({
+    name: 'community_members',
+  })
   members: IUser[];
+
+  @OneToMany(() => Post, (post) => post.community)
+  posts?: IPost[];
 
   @ManyToOne(() => User, (user) => user.createdCommunities)
   @JoinColumn()

@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import { IBaseEntityModel, IUser } from '.';
+import { IBaseEntityModel, ICommunity, IUser } from '.';
 
 export interface IPost extends IBaseEntityModel {
   title?: string;
@@ -9,4 +9,6 @@ export interface IPost extends IBaseEntityModel {
   
   author?: IUser;
   publishedAt?: Date;
+
+  community?: ICommunity;
 }

@@ -1,4 +1,5 @@
 import { IBaseEntityModel, IUser } from '.';
+import { IPost } from './post.model';
 
 export interface ICommunity extends IBaseEntityModel {
   title: string;
@@ -8,8 +9,8 @@ export interface ICommunity extends IBaseEntityModel {
   communityAvatar?: string;
   summary?: string;
 
-  members: IUser[];
-
+  members?: IUser[];
+  posts?: IPost[];
   owner?: IUser;
   createdBy?: IUser;
 }

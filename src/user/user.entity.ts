@@ -18,6 +18,8 @@ import {
 } from 'typeorm';
 import * as argon2 from 'argon2';
 import { Community } from 'src/community/community.entity';
+import { Post } from 'src/post/post.entity';
+import { IPost } from 'src/interfaces/post.model';
 
 @Entity({ name: 'users' })
 export class User extends BaseEntity implements IUser {
@@ -43,6 +45,9 @@ export class User extends BaseEntity implements IUser {
   @OneToMany(() => SocialLink, (socialLink) => socialLink.user)
   @JoinTable()
   socialLinks: ISocialLink[];
+
+  @OneToMany(() => Post, (post) => post.author)
+  posts?: IPost[];
 
   @OneToOne(() => Role, {
     nullable: true,
