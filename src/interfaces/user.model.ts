@@ -14,4 +14,5 @@ export interface IUser extends IBaseEntityModel {
 
   createdCommunities?: ICommunity[];
   ownedCommunities?: ICommunity[];
+  joinedCommunities?: ICommunity[];
 }

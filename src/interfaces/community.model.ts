@@ -8,6 +8,8 @@ export interface ICommunity extends IBaseEntityModel {
   communityAvatar?: string;
   summary?: string;
 
+  members: IUser[];
+
   owner?: IUser;
   createdBy?: IUser;
 }

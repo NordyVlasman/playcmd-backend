@@ -10,6 +10,7 @@ import {
   Index,
   JoinColumn,
   JoinTable,
+  ManyToMany,
   OneToMany,
   OneToOne,
   RelationId,
@@ -54,6 +55,9 @@ export class User extends BaseEntity implements IUser {
   @Index()
   @Column({ nullable: true })
   roleId?: number;
+
+  @ManyToMany(() => Community, (community) => community.members)
+  joinedCommunities?: ICommunity[];
 
   @OneToMany(() => Community, (community) => community.owner)
   ownedCommunities?: ICommunity[];
