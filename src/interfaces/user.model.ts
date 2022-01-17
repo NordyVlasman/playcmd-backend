@@ -24,3 +24,14 @@ export interface IUserCreateInput {
   lastName?: string;
   email?: string;
 }
+
+export interface IUserLoginInput {
+  email: string;
+  password: string;
+}
+
+export interface IUserRegistrationInput {
+  user: IUser;
+  password?: string;
+  originalUrl?: string;
+}
