@@ -1,9 +1,12 @@
-import { BadRequestException } from '@nestjs/common';
+import { BadRequestException, NotFoundException } from '@nestjs/common';
 import { ICrudService, IPagination } from 'src/interfaces';
 import {
   DeepPartial,
   DeleteResult,
+  FindCondition,
+  FindConditions,
   FindManyOptions,
+  FindOneOptions,
   Repository,
   SelectQueryBuilder,
   UpdateResult,
@@ -75,6 +78,22 @@ export abstract class CrudService<T extends BaseEntity>
     }
   }
 
+  findOneByIdString(id: string, options?: FindOneOptions<T>): Promise<T> {
+    throw new Error('Method not implemented.');
+  }
+  findOneByIdNumber(id: number, options?: FindOneOptions<T>): Promise<T> {
+    throw new Error('Method not implemented.');
+  }
+  findOneByConditions(
+    id: FindCondition<T>,
+    options?: FindOneOptions<T>,
+  ): Promise<T> {
+    throw new Error('Method not implemented.');
+  }
+  findOneByOptions(options: FindOneOptions<T>): Promise<T> {
+    throw new Error('Method not implemented.');
+  }
+
   public async create(entity: DeepPartial<T>, ...options: any[]): Promise<T> {
     const obj = this.repository.create(entity);
     try {
@@ -84,14 +103,27 @@ export abstract class CrudService<T extends BaseEntity>
     }
   }
 
-  update(
-    id: any,
-    entity: QueryDeepPartialEntity<T>,
+  public async update(
+    id: string | number | FindConditions<T>,
+    partialEntity: QueryDeepPartialEntity<T>,
     ...options: any[]
-  ): Promise<T | UpdateResult> {
-    throw new Error('Method not implemented.');
+  ): Promise<UpdateResult | T> {
+    try {
+      return await this.repository.update(id, partialEntity);
+    } catch (err) {
+      throw new BadRequestException(err);
+    }
   }
-  delete(id: any, ...options: any[]): Promise<DeleteResult> {
-    throw new Error('Method not implemented.');
+
+  public async delete(
+    critiria: string | number | FindConditions<T>,
+    ...options: any[]
+  ): Promise<DeleteResult> {
+    try {
+      return await this.repository.delete(critiria);
+    } catch (error) {
+      console.log(error);
+      throw new NotFoundException('The record whas not found');
+    }
   }
 }
