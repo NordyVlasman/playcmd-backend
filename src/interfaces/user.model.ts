@@ -6,7 +6,7 @@ export interface IUser extends IBaseEntityModel {
   lastName?: string;
   email?: string;
   imageUrl?: string;
-  password?: string;
+  hash?: string;
   about?: string;
   socialLinks: ISocialLink[];
 
@@ -17,4 +17,10 @@ export interface IUser extends IBaseEntityModel {
   ownedCommunities?: ICommunity[];
   joinedCommunities?: ICommunity[];
   posts?: IPost[];
+}
+
+export interface IUserCreateInput {
+  firstName?: string;
+  lastName?: string;
+  email?: string;
 }

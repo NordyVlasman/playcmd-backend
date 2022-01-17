@@ -1,4 +1,4 @@
-import { IsEmail, IsOptional } from 'class-validator';
+import { IsEmail, IsNotEmpty, IsOptional, IsString } from 'class-validator';
 import { BaseEntity } from 'src/core/base.entity';
 import { ICommunity, IRole, ISocialLink, IUser } from 'src/interfaces';
 import { Role } from 'src/role/role.entity';
@@ -11,35 +11,55 @@ import {
   JoinColumn,
   JoinTable,
   ManyToMany,
-  ManyToOne,
   OneToMany,
   OneToOne,
   RelationId,
 } from 'typeorm';
-import * as argon2 from 'argon2';
 import { Community } from 'src/community/community.entity';
 import { Post } from 'src/post/post.entity';
 import { IPost } from 'src/interfaces/post.model';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import { Exclude } from 'class-transformer';
 
 @Entity({ name: 'users' })
 export class User extends BaseEntity implements IUser {
-  @Column()
-  firstName: string;
+  @ApiPropertyOptional({ type: () => String })
+  @IsString()
+  @Index()
+  @Column({ nullable: true })
+  @IsOptional()
+  firstName?: string;
 
-  @Column()
-  lastName: string;
+  @ApiPropertyOptional({ type: () => String })
+  @IsString()
+  @Index()
+  @Column({ nullable: true })
+  @IsOptional()
+  lastName?: string;
 
-  @Column()
+  @ApiProperty({ type: () => String, minLength: 3, maxLength: 100 })
+  @IsNotEmpty()
+  @Index({ unique: false })
+  @IsOptional()
+  @Column({ nullable: true })
   @IsEmail()
-  email: string;
+  email?: string;
 
-  @Column()
-  password: string;
+	@ApiProperty({ type: () => String })
+	@IsString()
+	@Column()
+	@IsOptional()
+	@Exclude()
+	@Column({ nullable: true })
+  hash?: string;
 
-  @Column()
+	@ApiPropertyOptional({ type: () => String, maxLength: 500 })
+	@IsOptional()
+	@Column({ length: 500, nullable: true })
   imageUrl?: string;
 
   @Column({ nullable: true })
+  @IsOptional()
   about?: string;
 
   @OneToMany(() => SocialLink, (socialLink) => socialLink.user)
@@ -70,9 +90,4 @@ export class User extends BaseEntity implements IUser {
 
   @OneToMany(() => Community, (community) => community.createdBy)
   createdCommunities?: ICommunity[];
-
-  @BeforeInsert()
-  async hashPassword() {
-    this.password = await argon2.hash(this.password);
-  }
 }

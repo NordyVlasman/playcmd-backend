@@ -25,9 +25,4 @@ export abstract class BaseEntity extends Model implements IBaseEntityModel {
 
   @UpdateDateColumn()
   updatedAt?: Date;
-
-  @BeforeUpdate()
-  updateTimestamp() {
-    this.updatedAt = new Date();
-  }
 }
